@@ -4,17 +4,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, phone, date, time, comment } = req.body || {};
+    const { name, phone, date, time } = req.body || {};
 
     const safeName = String(name || "").trim();
     const safePhone = String(phone || "").trim();
     const safeDate = String(date || "").trim();
     const safeTime = String(time || "").trim();
-    // const safeComment = String(comment || "").trim();
 
     if (!safeName || !safePhone || !safeDate || !safeTime) {
       return res.status(400).json({ error: "Заполните обязательные поля" });
     }
+
+    // очищаем номер для ссылок
+    const cleanPhone = safePhone.replace(/\D/g, "");
 
     const message =
       `📌 Новая заявка на примерку\n\n` +
@@ -22,32 +24,46 @@ export default async function handler(req, res) {
       `Телефон: ${safePhone}\n` +
       `Дата: ${safeDate}\n` +
       `Время: ${safeTime}`;
-    //   `Комментарий: ${safeComment || "—"}`;
 
     const telegramResponse = await fetch(
       `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           chat_id: process.env.TELEGRAM_CHAT_ID,
           text: message,
-        }),
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "📞 Позвонить",
+                  url: `tel:${cleanPhone}`
+                },
+                {
+                  text: "💬 WhatsApp",
+                  url: `https://wa.me/${cleanPhone}`
+                }
+              ]
+            ]
+          }
+        })
       }
     );
 
-    const telegramData = await telegramResponse.json();
+    const data = await telegramResponse.json();
 
-    if (!telegramResponse.ok || !telegramData.ok) {
-      console.error("Telegram error:", telegramData);
+    if (!telegramResponse.ok || !data.ok) {
+      console.error("Telegram error:", data);
       return res.status(500).json({ error: "Ошибка отправки в Telegram" });
     }
 
     return res.status(200).json({ ok: true });
+
   } catch (error) {
-    console.error("Server error:", error);
+    console.error(error);
     return res.status(500).json({ error: "Внутренняя ошибка сервера" });
   }
 }

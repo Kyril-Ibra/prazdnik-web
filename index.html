@@ -387,6 +387,7 @@
 								<ul class="actions">
 									<li><input type="submit" value="Записаться на примерку" /></li>
 								</ul>
+								<p id="form-message" class="form-message" aria-live="polite"></p>
 							</form>
 						</section>
 						<section class="split contact", id="contacts">
@@ -528,9 +529,27 @@
 				elements.forEach(el => observer.observe(el));
 			});
 			</script>
-			
+
 			<script>
 			const bookingForm = document.getElementById("booking-form");
+			const formMessage = document.getElementById("form-message");
+
+			let messageTimeout;
+
+			function showFormMessage(text, type = "success") {
+				clearTimeout(messageTimeout);
+
+				formMessage.textContent = text;
+				formMessage.classList.remove("success", "error", "show");
+				formMessage.classList.add(type);
+
+				void formMessage.offsetWidth;
+				formMessage.classList.add("show");
+
+				messageTimeout = setTimeout(() => {
+				formMessage.classList.remove("show");
+				}, 5000);
+			}
 
 			if (bookingForm) {
 				bookingForm.addEventListener("submit", async function (e) {
@@ -542,17 +561,16 @@
 					name: formData.get("name"),
 					phone: formData.get("phone"),
 					date: formData.get("date"),
-					time: formData.get("time"),
-					// comment: formData.get("comment"),
+					time: formData.get("time")
 				};
 
 				try {
 					const response = await fetch("/api/booking", {
 					method: "POST",
 					headers: {
-						"Content-Type": "application/json",
+						"Content-Type": "application/json"
 					},
-					body: JSON.stringify(payload),
+					body: JSON.stringify(payload)
 					});
 
 					const result = await response.json();
@@ -561,11 +579,19 @@
 					throw new Error(result.error || "Ошибка отправки");
 					}
 
-					alert("Спасибо! Заявка отправлена. Мы свяжемся с вами для подтверждения примерки.");
 					bookingForm.reset();
+
+					showFormMessage(
+					"Спасибо! Заявка отправлена. Мы свяжемся с вами для подтверждения примерки.",
+					"success"
+					);
 				} catch (error) {
 					console.error(error);
-					alert("Не удалось отправить заявку. Попробуйте позже.");
+
+					showFormMessage(
+					"Не удалось отправить заявку. Попробуйте позже.",
+					"error"
+					);
 				}
 				});
 			}

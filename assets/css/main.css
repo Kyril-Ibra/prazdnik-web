@@ -5432,3 +5432,26 @@ button:hover {
     transition: none;
   }
 }
+
+.form-message {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  min-height: 1.4em;
+}
+
+.form-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-message.success {
+  color: #1f7a1f;
+}
+
+.form-message.error {
+  color: #c62828;
+}
