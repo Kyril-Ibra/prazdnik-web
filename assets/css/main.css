@@ -5455,3 +5455,48 @@ button:hover {
 .form-message.error {
   color: #c62828;
 }
+
+#navPanelToggle .toggle {
+  color: #D4AF37 !important;
+}
+
+#navPanelToggle .toggle:before {
+  color: #D4AF37 !important;
+}
+
+/* центрирование кнопки на мобильных */
+@media screen and (max-width: 736px) {
+
+  ul.actions.hero-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  ul.actions.hero-button li {
+    margin: 0 auto;
+  }
+  .hero-button {
+  text-align: center;
+}
+
+}
+
+/* выравнивание пунктов на мобильном */
+@media screen and (max-width: 736px) {
+
+  .benefits ul li,
+  .features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .benefits ul li .icon,
+  .features li .icon {
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+}
