@@ -73,7 +73,7 @@
 								</div>
 								<!-- <a class="image main"><img src="images/pic01.jpg" alt="" /></a> -->
 								<ul class="actions hero-button">
-									<li><a href="#booking-form" class="button large">Записаться на примерку</a></li>
+									<li><a href="#booking" class="button large">Записаться на примерку</a></li>
 								</ul>
 							</article>
 
@@ -81,57 +81,57 @@
 							<section class="posts">
 								<article>
 									<header>
-										<h2><a href="#booking-form">На свадьбу<br />
+										<h2><a href="#booking">На свадьбу<br />
 									</a></h2>
 									</header>
-									<a href="#booking-form" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
 									<p>Классические костюмы и смокинги для женихов и гостей. Подберём идеальный образ для свадебной церемонии.</p>
 							
 								</article>
 								<article>
 									<header>
-										<h2><a href="#booking-form">Для фотоссесии<br />
+										<h2><a href="#booking">Для фотоссесии<br />
 										</a></h2>
 									</header>
-									<a href="#booking-form" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
 									<p>Костюмы для фотосессий, рекламных проектов и студийных съёмок.</p>
 								</article>
 								<article>
 									<header>
-										<h2><a href="#booking-form">Для мероприятий<br />
+										<h2><a href="#booking">Для мероприятий<br />
 										</a></h2>
 									</header>
-									<a href="#booking-form" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
 									<p>Элегантные костюмы для деловых мероприятий, корпоративных вечеров и официальных событий.</p>
 									<ul class="actions special">
 									</ul>
 								</article>
 								<article>
 									<header>
-										<h2><a href="#booking-form">Для сцены и выступлений<br />
+										<h2><a href="#booking">Для сцены и выступлений<br />
 										</a></h2>
 									</header>
-									<a href="#booking-form" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
 									<p>Стильные костюмы для ведущих, выступлений и презентаций. Подходят для сценических и концертных выступлений.</p>
 									<ul class="actions special">
 									</ul>
 								</article>
 								<article>
 									<header>
-										<h2><a href="#booking-form">Смокинги<br />
+										<h2><a href="#booking">Смокинги<br />
 										</a></h2>
 									</header>
-									<a href="#booking-formr" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic06.jpg" alt="" /></a>
 									<p>Смокинги и вечерние костюмы для торжественных мероприятий и формальных событий.</p>
 									<ul class="actions special">
 									</ul>
 								</article>
 								<article>
 									<header>
-										<h2><a href="#booking-form">Аксессуары<br />
+										<h2><a href="#booking">Аксессуары<br />
 										</a></h2>
 									</header>
-									<a href="#booking-form" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+									<a href="#booking" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
 									<p>Галстуки, рубашки, бабочки, жилеты, пальто и другие аксессуары для завершения образа.</p>
 									<ul class="actions special">
 									</ul>
@@ -146,7 +146,7 @@
 							<div class="step">
 							<span class="icon solid fa-phone"></span>
 							<h3>Запись на примерку</h3>
-							<p><a href="tel:+79029904954">Позвоните</a> или <a href=#booking-form>оставьте заявку на сайте</a></p>
+							<p><a href="tel:+79029904954">Позвоните</a> или <a href=#booking>оставьте заявку на сайте</a></p>
 							</div>
 
 							<div class="step">
@@ -329,8 +329,8 @@
 
 				<!-- Footer -->
 					<footer id="footer">
-						<section id="booking-form">
-							<form method="post" action="#">
+						<section id="booking">
+							<form method="post" id="booking-form" action="#">
 								<div class="fields">
 									<div class="field">
 										<label for="name">Имя</label>
@@ -464,6 +464,7 @@
 				}, { passive: false });
 			})();
 			</script>
+
 			<script>
 			const phoneInput = document.getElementById('phone');
 
@@ -493,6 +494,7 @@
 				}
 			});
 			</script>
+
 			<script>
 			const dateInput = document.getElementById('date');
 			const today = new Date().toISOString().split('T')[0];
@@ -525,6 +527,48 @@
 
 				elements.forEach(el => observer.observe(el));
 			});
+			</script>
+			
+			<script>
+			const bookingForm = document.getElementById("booking-form");
+
+			if (bookingForm) {
+				bookingForm.addEventListener("submit", async function (e) {
+				e.preventDefault();
+
+				const formData = new FormData(bookingForm);
+
+				const payload = {
+					name: formData.get("name"),
+					phone: formData.get("phone"),
+					date: formData.get("date"),
+					time: formData.get("time"),
+					// comment: formData.get("comment"),
+				};
+
+				try {
+					const response = await fetch("/api/booking", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(payload),
+					});
+
+					const result = await response.json();
+
+					if (!response.ok) {
+					throw new Error(result.error || "Ошибка отправки");
+					}
+
+					alert("Спасибо! Заявка отправлена. Мы свяжемся с вами для подтверждения примерки.");
+					bookingForm.reset();
+				} catch (error) {
+					console.error(error);
+					alert("Не удалось отправить заявку. Попробуйте позже.");
+				}
+				});
+			}
 			</script>
 	</body>
 </html>
