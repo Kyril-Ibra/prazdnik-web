@@ -15,7 +15,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Заполните обязательные поля" });
     }
 
-    // очищаем номер для ссылок
     const cleanPhone = safePhone.replace(/\D/g, "");
 
     const message =
@@ -39,10 +38,6 @@ export default async function handler(req, res) {
             inline_keyboard: [
               [
                 {
-                  text: "📞 Позвонить",
-                  url: `tel:${cleanPhone}`
-                },
-                {
                   text: "💬 WhatsApp",
                   url: `https://wa.me/${cleanPhone}`
                 }
@@ -57,13 +52,12 @@ export default async function handler(req, res) {
 
     if (!telegramResponse.ok || !data.ok) {
       console.error("Telegram error:", data);
-      return res.status(500).json({ error: "Ошибка отправки в Telegram" });
+      return res.status(500).json({ error: data.description || "Ошибка отправки в Telegram" });
     }
 
     return res.status(200).json({ ok: true });
-
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    console.error("Server error:", error);
+    return res.status(500).json({ error: "Server error" });
   }
 }
