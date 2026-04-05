@@ -5508,3 +5508,100 @@ button:hover {
   }
 
 }
+
+/* ===== footer contacts ===== */
+@media screen and (min-width: 981px) {
+
+  #footer .split.contact {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-top: 0 !important;
+  }
+
+  #footer .split.contact > section {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 3.25rem 3.25rem 3rem 3.25rem !important;
+    border-top: 0 !important;
+    border-left: 1px solid rgba(144, 144, 144, 0.18) !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+  }
+
+  #footer .split.contact > section:first-child {
+    border-left: 0 !important;
+  }
+
+  #footer .split.contact h3 {
+    margin: 0 0 1.15rem 0 !important;
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.14em !important;
+    text-align: left !important;
+  }
+
+  #footer .split.contact p,
+  #footer .split.contact ul {
+    margin: 0 !important;
+  }
+
+  #footer .split.contact p {
+    line-height: 2 !important;
+  }
+
+  #footer .split.contact a {
+    border-bottom: 0 !important;
+  }
+
+  #footer .split.contact p a {
+    border-bottom: 1px dotted rgba(144, 144, 144, 0.35) !important;
+  }
+
+  #footer .split.contact .contact-social {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  #footer .split.contact .contact-social h3 {
+    text-align: center !important;
+  }
+
+  #footer .split.contact .contact-social .icons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.85rem !important;
+    width: auto !important;
+    margin: 0 auto !important;
+  }
+
+  #footer .split.contact .contact-social .icons li {
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  #footer .split.contact .contact-social .icons a {
+    width: 2.9rem !important;
+    height: 2.9rem !important;
+    line-height: 2.9rem !important;
+  }
+
+  #footer .split.contact .contact-social .icons a:before {
+    font-size: 1.05rem !important;
+  }
+}
+
+@media screen and (max-width: 980px) {
+  #footer .split.contact > section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
